@@ -1,0 +1,16 @@
+import colorama
+from colorama import Fore, Back, Style
+colorama.init()
+
+print('\033[31m' + 'some red text')
+print('\033[39m')  # and reset to default color
+print()
+print(f"{Fore.RED}C{Fore.GREEN}O{Fore.YELLOW}L{Fore.BLUE}O{Fore.MAGENTA}R{Fore.CYAN}S{Fore.WHITE}!")
+print(f"{Fore.RED}Red Text")
+print(f"{Fore.GREEN}Green Text")
+print(f"{Fore.YELLOW}Yellow Text")
+print(f"{Fore.BLUE}Blue Text")
+print(f"{Fore.MAGENTA}Magenta Text")
+print(f"{Fore.CYAN}Cyan Text")
+print(f"{Fore.WHITE}White Text")
+print()
