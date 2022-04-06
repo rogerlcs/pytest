@@ -1,16 +1,36 @@
+from requests import Request, Session
 import colorama
 from colorama import Fore, Back, Style
-colorama.init()
+colorama.init(autoreset=True)
 
-print('\033[31m' + 'some red text')
-print('\033[39m')  # and reset to default color
-print()
-print(f"{Fore.RED}C{Fore.GREEN}O{Fore.YELLOW}L{Fore.BLUE}O{Fore.MAGENTA}R{Fore.CYAN}S{Fore.WHITE}!")
-print(f"{Fore.RED}Red Text")
-print(f"{Fore.GREEN}Green Text")
-print(f"{Fore.YELLOW}Yellow Text")
-print(f"{Fore.BLUE}Blue Text")
-print(f"{Fore.MAGENTA}Magenta Text")
-print(f"{Fore.CYAN}Cyan Text")
-print(f"{Fore.WHITE}White Text")
-print()
+def checkstatus(host, proxy):
+    proxies = {"http" : "http://%s:80" % (proxy),
+               "https" : "http://%s:80" % (proxy)}
+    try:
+        s = Session()
+        r = requests.Request('CONNECT',"http://"+host)
+        prepped = r.prepare()
+        resp = s.send(prepped, proxies = proxies, timeout = 3) 
+        return resp.status_code
+    except OSError:
+        return "400"
+    else:
+        return "erro"
+    
+
+
+def main():
+    nomearq = str(input("Arquivo:"))
+    with open(nomearq,'rt') as file:
+        line = file.readline()
+        while line:
+            line = line.strip('\n')
+            host,proxy = line.split(',')
+            status = checkstatus(host, proxy)
+            if status == 200:
+                print(Fore.GREEN + "%s - %s" % (line,status))
+            else:
+                print(Fore.RED + "%s - %s" % (line,status))
+            line = file.readline()
+
+main() 
